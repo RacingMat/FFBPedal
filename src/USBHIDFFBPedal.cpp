@@ -11,11 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "USBHID.h"
+#include "USBHIDFFBPedal.h"
 
 #if CONFIG_TINYUSB_HID_ENABLED
 
-#include "USBHIDFFBPedal.h"
 
 USBHIDFFBPedal::USBHIDFFBPedal(): hid(), _x(0), _y(0){
     static bool initialized = false;
@@ -35,7 +34,11 @@ void USBHIDFFBPedal::begin(){
 }
 
 void USBHIDFFBPedal::end(){
+    hid.end();
+}
 
+bool USBHIDFFBPedal::ready() {
+    return hid.ready();
 }
 
 bool USBHIDFFBPedal::write(){
@@ -53,8 +56,11 @@ bool USBHIDFFBPedal::pedalMove(int16_t x, int16_t y){
 }
 
 bool USBHIDFFBPedal::send(){
-    return write();
+    bool result = false;
+    if ( hid.ready() ) {
+        result = write();
+    }
+    return result;
 }
-
 
 #endif /* CONFIG_TINYUSB_HID_ENABLED */

@@ -1,0 +1,5 @@
+hidapitester.exe --vidpid 303A/1001 --usagePage 0xFF00  -l 4 --open --send-feature 6,66,67,68,69 --close
+
+hidapitester.exe --vidpid 303A/1001 --usagePage 0xFF00  -l 5 --open --send-output 6,66,67,68,69 --close
+
+hidapitester.exe --vidpid 303A/1001 --usagePage 0xFF00  -l 5 -t 3000 --open --send-output 6,66,67,68,69 --read-input --close

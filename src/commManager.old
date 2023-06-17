@@ -1,0 +1,119 @@
+// *************************************** UART COMMAND ******************************************
+
+/**
+ * @brief handler to answer to an unknow command
+ * 
+ * @param sender 
+ * @param cmd 
+ */
+void cmd_unrecognized(SerialCommands* sender, const char* cmd)
+{
+  sender->GetSerial()->print("E:Unrecognized command [");
+  sender->GetSerial()->print(cmd);
+  sender->GetSerial()->println("]");
+}
+
+/**
+ * @brief return all FFB Pedal info
+ * 
+ * @param sender the serial object
+ */
+void cmd_get_info(SerialCommands* sender)
+{
+  sender->GetSerial()->printf("R:INFO:pos=%lu,min=%lu,max=%lu\n", 
+                              pedalEngine.getPosition(),
+                              pedalEngine.getPositionMin(),
+                              pedalEngine.getPositionMax());
+}
+
+/**
+ * @brief incoming abs effect request.
+ * First param is the state (0/1)
+ * Second param is the optional duration in ms
+ * 
+ * @param sender the serial object
+ */
+void cmd_effect_abs(SerialCommands* sender)
+{
+  bool success = true;
+  bool state = 0;
+  int duration_ms = -1;
+
+  char* state_str = sender->Next();
+  if ((state_str == NULL) || (state_str[0] != '0' && state_str[0] != '1')) {
+    success = false;
+    sender->GetSerial()->printf("E:ABS:Wrong param\n");
+    return;
+  } else {
+    state = atoi(state_str);
+  }
+
+  char* duration_str = sender->Next();
+	if (duration_str != NULL)
+	{
+		duration_ms = atoi(duration_str);
+    // if the response is 0
+    if (duration_ms == 0) {
+      success = false;
+    }
+	}
+
+  //TODO manage the abs asking effect.
+
+  sender->GetSerial()->printf("R:ABS:%d:%d\n", state, duration_ms);
+}
+
+/**
+ * @brief start the loadcell sample
+ * 
+ * @param sender 
+ */
+void cmd_loadcell_start_sample(SerialCommands* sender)  {
+  loadCell.startSample();
+  sender->GetSerial()->printf("R:LC_SS:OK\n");
+}
+
+/**
+ * @brief return the statictic on sample
+ * 
+ * @param sender 
+ */
+void cmd_loadcell_stat(SerialCommands* sender) {
+  String response = "R:LC_STAT:" + loadCell.getStats() + String("\n");
+  sender->GetSerial()->printf(response.c_str());
+}
+
+/**
+ * @brief change the effect
+ * 
+ * @param sender the serial object
+ */
+void cmd_loadcell_filter(SerialCommands* sender)
+{
+  bool success = true;
+  float fc, q = 0;
+
+  char* fc_str = sender->Next();
+  if ((fc_str == NULL)) {
+    success = false;
+    sender->GetSerial()->printf("E:LC_FILTER:Wrong fc param (:fc:q)\n");
+    return;
+  } else {
+    fc = atof(fc_str);
+  }
+
+  char* q_str = sender->Next();
+	if (q_str == NULL)
+	{
+    success = false;
+    sender->GetSerial()->printf("E:LC_FILTER:Wrong q param (:fc:q)\n");
+    return;
+	} else {
+    q = atof(q_str);
+  }
+
+  //loadCell.setFilterParam(fc, q);
+
+  sender->GetSerial()->printf("R:LC_FILTER:%.2f:%.2f\n", fc, q);
+}
+

@@ -20,6 +20,14 @@
         "streambuf": "cpp",
         "cmath": "cpp",
         "type_traits": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "tuple": "cpp"
     }
 }

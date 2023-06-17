@@ -14,6 +14,7 @@
 
 #pragma once
 #include "USBHID.h"
+
 #if CONFIG_TINYUSB_HID_ENABLED
 
 // ActivePedal Report Descriptor Template
@@ -29,7 +30,7 @@
     HID_USAGE_PAGE     ( HID_USAGE_PAGE_DESKTOP                 ) ,\
     HID_USAGE          ( HID_USAGE_DESKTOP_X                    ) ,\
     HID_USAGE          ( HID_USAGE_DESKTOP_Y                    ) ,\
-    HID_LOGICAL_MIN_N  ( 0x8001                                 , 2) ,\
+    HID_LOGICAL_MIN_N  ( 0x8000                                 , 2) ,\
     HID_LOGICAL_MAX_N  ( 0x7fff                                 , 2) ,\
     HID_REPORT_COUNT   ( 2                                      ) ,\
     HID_REPORT_SIZE    ( 16                                      ) ,\
@@ -57,10 +58,11 @@ public:
     USBHIDFFBPedal(void);
     void begin(void);
     void end(void);
+    bool send();
 
     bool pedalMove(int16_t x, int16_t y);
 
-    bool send();
+    bool ready();
 
     // internal use
     uint16_t _onGetDescriptor(uint8_t* buffer);
