@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Vincent Manoukian 2023.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ */
+
 #include "CommManager.h"
 
 CommManager::CommManager() {
@@ -20,12 +27,12 @@ void CommManager::begin(USBHIDVendor *_vendor, LoadCellManager *_loadCell, Pedal
 uint8_t CommManager::process_mesg_0(uint16_t length_incoming,  uint8_t *buff_in, uint8_t *buff_output){
   const uint32_t position = pedalEngine->getPosition();
   const int32_t speed = pedalEngine->getSpeed();
-  const uint16_t current = pedalEngine->getCurrent();
+  const uint16_t motor_command = pedalEngine->getMotorCommand();
   const uint32_t load = loadCell->getLoad();
   uint8_t size;
   memcpy(buff_output + size, &position, (size+=sizeof(uint32_t)) );
   memcpy(buff_output + size, &speed,    (size+=sizeof(int32_t)) );
-  memcpy(buff_output + size, &current,  (size+=sizeof(uint16_t)) );
+  memcpy(buff_output + size, &motor_command,  (size+=sizeof(uint16_t)) );
   memcpy(buff_output + size, &load,     (size+=sizeof(uint32_t)) );
   return size;
 }

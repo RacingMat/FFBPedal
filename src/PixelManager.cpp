@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Vincent Manoukian 2023.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ */
+
 #include "PixelManager.h"
 
 void PixelManager::begin() {
@@ -13,6 +20,7 @@ void PixelManager::begin() {
     pixel.begin();            // INITIALIZE NeoPixel strip object (REQUIRED)
     pixel.setBrightness(10);  // not so bright
     pixel.fill(PIXEL_STARTUP);
+    pixel.setBrightness(10);  // not so bright
     pixel.show();
 }
 

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Vincent Manoukian 2023.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ */
+
 #include <Arduino.h>
 
 #include "PixelManager.h"
@@ -140,7 +147,8 @@ void setup() {
   infos();
 
   // Init the pixel manager for visual feedback
-  PixelManager pixelManager;
+  pixelManager.begin();
+  delay(1000);
 
   // Init the USB Devices: CDC for virtual serial, and HID for ffb reports
   USB.manufacturerName("Vincent Manoukian");
@@ -231,7 +239,7 @@ void loop() {
   if (millis() -  lastprint >  100) {
     //log_v("nb processing ffb/sensor: %d - %d",ffb_statistic,sensor_statistic);
     log_d("FFB data : %6dmN -> %6d/%6d (pos/target en microstep)", 
-      loadCell.getLoad(), pedalEngine.getPosition(), pedalEngine.getPosition_target());
+      loadCell.getLoad(), pedalEngine.getPosition(), pedalEngine.getMotorCommand());
     ffb_statistic=0;
     sensor_statistic=0;
     lastprint= millis();
