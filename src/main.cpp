@@ -21,7 +21,7 @@
 
 #include "CommManager.h"
 
-// ATTENTION : overide by the ADC.begin
+// ATTENTION : override by the ADC.begin
 // load arduino esp32 default
 #define SPI_CLK   12
 #define SPI_MISO  13
